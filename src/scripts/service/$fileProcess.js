@@ -36,6 +36,9 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
             // when the external processor is not well defined
             angular.extend(Item.prototype, this.Processor);
         }
+        else {
+            angular.extend(Item.prototype, this.Processor.prototype);
+        }
 
         // add the default filters
         this.filters.unshift(this._queueLimitFilter);
