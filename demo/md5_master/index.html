@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Calculate the MD5 of texts and files, online or offline.">
+    <meta name="author" content="Yanan Wen">
+    <title>MD5 master</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/md5_tool.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="../../dist/angular-file-process.js"></script>
+    <script src="../../dist/fileProcMD5.js"></script>
+    <script src="js/controllers.js"></script>
+</head>
+<body ng-app="md5toolApp" ng-controller="MD5UIControl" ng-file-drop>
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">MD5 master</a>
+        </div>
+    </div>
+</div>
+<div class="container col-md-offset-2 col-md-8">
+    <tabset ng-init="initFileTabs()">
+        <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled" select="saveCurTab(tab.title)">
+            <div ng-include="tab.url"></div>
+        </tab>
+    </tabset>
+</div>
+</body>
+</html>

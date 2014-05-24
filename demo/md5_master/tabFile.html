@@ -1,0 +1,59 @@
+<div ng-controller="MD5FileControl as md5File">
+    <input type="file" id="fileList" name="files[]" multiple ng-file-select />
+    <div>
+        <p>Totall progress ({{ fileHandler.itemList.length() }} files):</p>
+        <div class="progress" style="">
+            <div class="progress-bar" role="progressbar" ng-style="{ 'width': fileHandler.progress + '%' }"></div>
+        </div>
+        <button type="button" class="btn btn-success btn-s" ng-click="fileHandler.processAll()" ng-disabled="!fileHandler.findItemsReadyToBeProcessed().length">
+            <span class="glyphicon glyphicon-play"></span> Process all
+        </button>
+        <button type="button" class="btn btn-warning btn-s" ng-click="fileHandler.abortAll()" ng-disabled="!fileHandler.findItemsInProcessing().length">
+            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+        </button>
+        <button type="button" class="btn btn-danger btn-s" ng-click="fileHandler.removeAll()" ng-disabled="!fileHandler.itemList.length()">
+            <span class="glyphicon glyphicon-trash"></span> Remove all
+        </button>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="30%">Name</th>
+            <th ng-show="fileHandler.isHTML5">Size</th>
+            <th ng-show="fileHandler.isHTML5">Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+            <th>Results</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in fileHandler.itemList.list">
+            <td><strong>{{ item.file.name }}</strong></td>
+            <td ng-show="fileHandler.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="fileHandler.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+            </td>
+            <td class="text-center">
+                <span ng-show="item.isSuccess()"><i class="glyphicon glyphicon-ok"></i></span>
+                <span ng-show="item.isAborted()"><i class="glyphicon glyphicon-stop"></i></span>
+                <span ng-show="item.isError()"><i class="glyphicon glyphicon-remove"></i></span>
+            </td>
+            <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.process()" ng-disabled="!item.isReady()">
+                    <span class="glyphicon glyphicon-play"></span> Process
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.abort()" ng-disabled="!item.isProcessing()">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+            </td>
+            <td>{{item.md5}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

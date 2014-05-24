@@ -1,0 +1,11 @@
+<div ng-controller="MD5TextControl as md5Text">
+    <!--Text input area-->
+    <textarea id="textInput" class="container-full" rows="5" ng-model="md5Text.txt" focus-on="textInput"></textarea>
+    <!--Button area-->
+    <div>
+        <button type="button" class="btn btn-primary" ng-click="md5Text.calMD5()">MD5</button>
+        <button type="button" class="btn btn-success" ng-click="md5Text.selectMD5()">Select</button>
+        <button type="button" class="btn btn-warning" ng-click="md5Text.clear()">Clear</button>
+    </div>
+    <input class="bg-success container-full" type="text" id="textResult" placeholder="Result" readonly ng-model="md5Text.md5" focus-on="MD5Output" select-as="MD5Output"/>
+</div>
