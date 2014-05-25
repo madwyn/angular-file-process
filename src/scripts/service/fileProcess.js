@@ -18,9 +18,9 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
                     _construct:  function(){},
                     // destroy an item
                     _destruct:   function(){},
-                    // process an item, it should at least trigger IN_SUCCESS event
+                    // process an item, it should at least trigger the IN_SUCCESS event
                     _process:    function(){this.proc.trigger(EVT.IN_SUCCESS, this)},
-                    // abort the processing, it should at least trigger IN_ABORT event
+                    // abort the processing, it should at least trigger the IN_ABORT event
                     _abort:      function(){this.proc.trigger(EVT.IN_ABORT, this)}
             },
             scope:              $rootScope,         // the variable working scope
@@ -93,7 +93,7 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
         },
 
         /**
-         * Add file(s) to the processing list
+         * Add files to the processing list
          * @param files     The files
          * @param options   The options from directives
          */
@@ -172,7 +172,7 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
         },
 
         /**
-         * Abort all processing task for all
+         * Abort the processing task for all items
          */
         abortAll: function() {
             this.trigger(EVT.ABORT_ALL, this);
@@ -212,7 +212,7 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
             // if processing
             if (this._status === STAT.PROCESSING) {
                 // find one item to process
-                var item = this.findOneItemToBeProcessed();
+                var item = this._findOneItemToBeProcessed();
 
                 // if there is an item to be processed
                 if (item != null) {
@@ -294,7 +294,7 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
             }
             else {
                 var total     = this.itemList.length();
-                var processed = this.countItemsProcessed();
+                var processed = this._countItemsProcessed();
                 var ratio     = 100 / total;
                 var current   = (itemProgress || 0) * ratio / 100;
 
@@ -328,8 +328,9 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
         /**
          * Find one item to be processed
          * @returns {Item/null}
+         * @private
          */
-        findOneItemToBeProcessed: function() {
+        _findOneItemToBeProcessed: function() {
             // loop should be faster than filter
             for (var i = 0; i < this.itemList.length(); i++) {
                 if (this.itemList.get(i).isToBeProcessed())
@@ -350,7 +351,7 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
         },
 
         /**
-         * Find the items been processing
+         * Find the items being processed
          * @returns {Array}
          */
         findItemsInProcessing: function() {
@@ -362,8 +363,9 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
         /**
          * Count the processed item
          * @returns {number}
+         * @private
          */
-        countItemsProcessed: function() {
+        _countItemsProcessed: function() {
             var num = 0;
 
             this.itemList.list.forEach(function(item) {
