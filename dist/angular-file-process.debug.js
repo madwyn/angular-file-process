@@ -817,6 +817,11 @@ app.factory('$fileProcess', ['$rootScope', '$window', function($rootScope, $wind
     // export events
     api.EVT = EVT;
 
+    /* test-code */
+    api.Item = Item;
+    api.Process = Process;
+    api.ItemList = ItemList;
+    /* end-test-code */
 
     // static functions
     return api;
