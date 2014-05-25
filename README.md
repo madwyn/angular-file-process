@@ -1,61 +1,121 @@
 #angular-file-process
 
-Angular File Process is a file processing module for AngularJS framework.
+Angular File Process is a file processing module for the AngularJS framework.
 
-You can use drag-n-drop and it supports processing progress, validation filters and a file processing queue.
+You can use drag-n-drop and it provides processing progress, validation filters and a file processing queue.
 
 You can use it for file uploading, file reading and other kinds of processing.
 
-You can also write plugins to extend the functionality.
+You can also write plugins to do your own processing.
 
 ##Dependencies
 
-The [AngularJS](https://github.com/angular/angular.js) framework.
-
-It also relies on HTML5 to fully functional, but it could be modified to support old browsers.
+- The [AngularJS](https://github.com/angular/angular.js) framework.
+- It also relies on HTML5 to fully functional, but it could be modified to support old browsers.
 
 ##In the package
 
 ###Directives:
 
-- `ngFileSelect`:
-- `ngFileDrop`:(TODO)
-- `ngFileOver`:(TODO)
+- `ngFileSelect`: To be bound to the `<input type="file" />` element. Then the `file:add` events will be sent to the `$fileProcess` module, where the files which passed the filters will be added to the processing queue.
+- `ngFileDrop`: 
+- `ngFileOver`: 
 
 ###Service:
 
-- `$fileProcess`: controls the processing queue, triggers events and handles actions.
+- `$fileProcess`: Controls the processing queue, triggers events and handles actions.
 
 ###File Processors:
 
-- `fileProcMD5.js`: contains `$fileMD5` for MD5 calculation of files. Very basic example for writing a file processor. Will require [FastMD5](https://github.com/iReal/FastMD5) to work. Please check the demo for details.
-- `fileUploader.js`: contains `$fileUploader` for file upload, quite similar as [angular-file-upload](https://github.com/nervgh/angular-file-upload).
+- `$fileMD5`: Generates md5 of files. Very basic example for writing a file processor. Will require [FastMD5](https://github.com/iReal/FastMD5) to work. Please check the demo for details.
+- `$fileUploader`: For file uploading, quite similar as [angular-file-upload](https://github.com/nervgh/angular-file-upload).
 
 ##The `$fileProcess` API
 
-For the time being, please refer to the code and the demo.
-(TODO)
+###Attributes
+- autoStart `boolean`: Start processing automatically after loading the files.
+- removeAfterProc `boolean`: Remove the tem from the queue after processing.
+- Processor `Object`: The processor plugin will be used for file processing.
+- scope `Object`: Scope for the HTML update, the working area.
+- itemList `ItemList`: The processing queue contains the file items.
+- filters `Array`: The filters to be applies before items adding to the queue.
 
-##How to use?
+###Functions
 
-For the time being, please refer to the demo.
-(TODO)
+- `addFiles`: Add files to the processing list.
+- `processItem`: Process one given item.
+- `processAll`: Process all the unprocessed items.
+- `abortItem`: Abort the processing of the given item.
+- `abortAll`: Abort the processing task for all items.
+- `removeItem`: Remove an item from the list.
+- `removeAll`: Remove all the items from the list.
+- `findItemsReadyToBeProcessed`: Find the items ready to be processed. These includes the unprocessed and aborted items.
+- `findItemsToBeProcessed`: Find the items marked as `TO_BE_PROCESSED`. The items will be marked as such before they go processing.
+- `findItemsInProcessing`: Find the items being processed.
 
-##How to build?
+##Using it as a file MD5 generator
 
-Please install [node.js](http://nodejs.org/) and [Grunt](http://gruntjs.com/) to build.
+    var fileHandler = $fileProcess.create({
+        scope: $scope,
+        Processor: $fileProcMD5
+    });
 
-Run `grunt deploy` for a release build or `grunt debug` for a debug build.
+Please refer to the demo for more using details.
 
-##How to test?
+##Using it as a file uploader
 
-Please install [Bower](http://bower.io/), [Karma](http://karma-runner.github.io/0.12/index.html) and [karma-jasmine](https://github.com/karma-runner/karma-jasmine) for the testing.
+    var fileHandler = $fileProcess.create({
+        scope: $scope,
+        Processor: $fileUploader
+    });
 
-Run `karma start karma.conf.js`
+##Using it your way
 
-##What else?
+To extend the angular-file-process is easy. Just implement the 4 basic functions:
 
-This module is extensible. You can write your own file processors to enrich the functionality.
+- `_construct`: Will be called during the construction of each Item object, use it as the constructor.
+- `_destruct`: Will be called when removing an item.
+- `_process`: Process an item, it should at least trigger the `IN_SUCCESS` event.
+- `_abort`: Abort the processing, it should at least trigger the `IN_ABORT` event.
+
+For more details, please refer to `fileProcMD5.js` as an example.
+
+##Installing Dependencies
+
+Before building the project, please install and configure the following dependencies:
+
+- [Git](http://git-scm.com/): For source control.
+- [Node.js](http://nodejs.org/): For running Grunt.
+- [Grunt](http://gruntjs.com/): The build system. Install the grunt command-line tool globally with:
+
+
+    npm install -g grunt-cli
+    
+- [Bower](http://bower.io/): Manage client-side packages. Install the bower command-line tool globally with:
+
+
+    npm install -g bower
+
+##Building angular-file-process
+
+    # Clone the repository
+    git clone https://github.com/madwyn/angular-file-process angular-file-process
+    
+    # Go to the directory
+    cd angular-file-process
+    
+    # Install node.js dependencies:
+    npm install
+    
+    # Install bower components:
+    bower install
+    
+    # Build angular-file-process:
+    grunt package
+
+##Run the unit tests
+
+    karma start karma.conf.js
 
 ##Inspired by the [angular-file-upload](https://github.com/nervgh/angular-file-upload) project
 
@@ -65,11 +125,11 @@ Great thanks to [nervgh](https://github.com/nervgh) and other developers! I get 
 
 I would like to build a more general file handling module rather than just uploading files. To be more specific, I was learning AngularJS and hoping to write a tiny tool which calculates the MD5 of files locally. That was where all of this started.
 
-The BIG difference is this module is extensible, it is designed to be more generic. It also can be used as a file uploader, all you have to do is to use the $fileUploader.
+The BIG difference is this module is extensible, it is designed to be more generic.
 
 Some of the small differences:
 
 - Independent `ItemList` class for queue handling, increased testability.
 - Improved task queue handling. The functions like `abortAll()` can work with FileReader and other handlers.
-- Difference state machine approach for controlling the item status.
+- Different state machine approach for controlling the item status.
 - Added tests. Currently only the `ItemList` is tested. More tests will be added.
