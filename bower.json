@@ -1,6 +1,6 @@
 {
     "name": "angular-file-process",
-    "description": "Angular File Process is a module for the AngularJS framework",
+    "description": "Angular File Process is a file processing module for the AngularJS framework",
     "version": "0.0.0",
     "homepage": "https://github.com/madwyn/angular-file-process",
     "license": "MIT",

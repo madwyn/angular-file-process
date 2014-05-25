@@ -39,6 +39,9 @@ module.exports = (grunt) ->
         src: ['**.js']
         dest: 'dist/'
         expand:true
+      debug:
+        src:  'dist/angular-file-process.js'
+        dest: 'dist/angular-file-process.debug.js'
 
   # strip the test code
     strip_code:
@@ -46,7 +49,10 @@ module.exports = (grunt) ->
         start_comment: "test-code",
         end_comment: "end-test-code"
       your_target:
-        src: "dist/*.js"
+        src: [
+          "dist/*.js"
+          "!!dist/*.debug.js"
+        ]
 
   # compress the js files
     uglify:
@@ -70,16 +76,10 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-concat'
 
-  grunt.registerTask 'deploy', [
+  grunt.registerTask 'package', [
     'clean'
     'concat'
     'copy'
     'strip_code'
     'uglify'
-  ]
-
-  grunt.registerTask 'debug', [
-    'clean'
-    'concat'
-    'copy'
   ]
