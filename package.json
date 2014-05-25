@@ -1,7 +1,7 @@
 {
     "name": "angular-file-process",
     "description": "Angular File Process is a file processing module for the AngularJS framework",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "homepage": "https://github.com/madwyn/angular-file-process",
     "repository": {
         "type": "git",

@@ -1,5 +1,5 @@
 /*
-  angular-file-process v0.0.1
+  angular-file-process v0.0.2
   https://github.com/madwyn/angular-file-process
  */
 (function(angular, factory) {
