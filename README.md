@@ -53,6 +53,27 @@ You can also write plugins to do your own processing.
 - `findItemsToBeProcessed`: Find the items marked as `TO_BE_PROCESSED`. The items will be marked as such before they go processing.
 - `findItemsInProcessing`: Find the items being processed.
 
+###Events
+
+The event names are stored in the enum `$fileProcess.EVT`. Access the event name: `$fileProcess.EVT.ABORT_ITEM`.
+
+The internal instance of class `Process` is called `proc`.
+
+    ABORT_ITEM                  : When an item is aborted.
+    ABORT_ALL                   : When abortAll() is called.
+    ERROR_ITEM                  : When the processor returned error during/after processing.
+    SUCCESS_ITEM                : When the processor returned success after processing.
+    PROGRESS_ITEM               : When the processor is progressing an item.
+    PROGRESS_ALL                : When the proc is updating the over all progress.
+    COMPLETE_ALL                : When the task list is complete.
+    BEFORE_ADDING_A_FILE        : Before adding a file to the list.
+    AFTER_ADDING_A_FILE         : After adding a file to the list.
+    WHEN_ADDING_A_FILE_FAILED   : When adding a file failed, usually caused by failure to passing the filter.
+    AFTER_ADDING_ALL            : After adding all files.
+    BEFORE_PROCESSING_ITEM      : Before processing an item.
+    BEFORE_PROCESSING_ALL       : Before processing all items in the list.
+
+
 ##Using it as a file MD5 generator
 
     var fileHandler = $fileProcess.create({
@@ -88,13 +109,11 @@ Before building the project, please install and configure the following dependen
 - [Node.js](http://nodejs.org/): For running Grunt.
 - [Grunt](http://gruntjs.com/): The build system. Install the grunt command-line tool globally with:
 
-
-    npm install -g grunt-cli
+    `npm install -g grunt-cli`
     
 - [Bower](http://bower.io/): Manage client-side packages. Install the bower command-line tool globally with:
 
-
-    npm install -g bower
+    `npm install -g bower`
 
 ##Building angular-file-process
 
